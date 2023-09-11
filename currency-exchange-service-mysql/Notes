@@ -1,0 +1,11 @@
+url to access currency-exchange service2
+request:
+http://localhost:8002/currency-exchange/from/USD/to/INR
+response:
+{
+"id": 10001,
+"from": "USD",
+"to": "INR",
+"conversionMultiple": 65,
+"environment": "8002"
+}

@@ -1,0 +1,244 @@
+https://developers.redhat.com/articles/2022/01/11/5-design-principles-microservices#what_is_a_microservices_oriented_application_
+ 5 design principles for microservices
+
+What is a microservices-oriented application?
+Microservices are becoming increasingly popular to address shortcomings in monolithic applications. 
+This article is the first in a three-part series that explains the design principles for a 
+microservices-oriented application (MOA), how companies tend to evolve to use microservices, and the trade-offs.
+
+
+How applications evolve from monolith to microservices
+The disadvantages vs. benefits of microservices
+
+What is a monolithic application?
+The term monolithic applies to tightly integrated applications where it is hard to change one function 
+without also recoding other parts of the application. 
+Components in a monolithic application might be distributed among many machines, 
+but they remain highly dependent on one another. 
+Not only does the addition of a new feature have ripple effects throughout the code, 
+but deploying the change requires retesting and redeploying the entire application. 
+These upgrades can be labor-intensive and hazardous, particularly when an application has hundreds of 
+thousands or even millions of users.
+
+When IT departments had the luxury of releasing software every six months, 
+this type of upgrade process was tolerable. 
+But modern business demands force releases to happen weekly, daily, or even more often, so the labor and 
+risk inherent in upgrading monolithic applications become untenable.
+
+Something has to change. That change is the transformation to the microservices-oriented application (MOA).
+
+What is a microservices-oriented application?
+An MOA breaks its logic into small, well-encapsulated services that are distributed over 
+several computing devices in a loosely coupled manner. 
+Each service lives at a distinct IP address on the network and exposes a public interface that 
+is language-agnostic. 
+The most popular type of language-agnostic interface is a REST API, but other models for communication exist. 
+Microservices also generally get deployed as containers when it's time to go live.
+
+Typically, some mechanism behind the scenes coordinates the microservices to create a unified application 
+experience. 
+Because each microservice is well-encapsulated, its code can be updated quickly with minimal side effects. 
+This makes maintenance easier and scaling faster.
+
+The purpose of this series is to describe the principles involved in choosing the microservices architecture, 
+along with the pros and cons. 
+This first article presents the five basic principles of microservices-oriented application design. 
+The next part of the series explains the evolution of modern applications and why they lead to an MOA, 
+and the third part finishes the series with trade-offs that microservices make.
+
+Five design principles for microservices
+The benefits of an MOA can be significant, but they come with a price. 
+You need to know a thing or two about microservice design to implement an MOA effectively—you can't make 
+it up as you go along. 
+
+A microservice application must follow these five principles:
+
+Single concern
+Discrete
+Transportable
+Carries its own data
+Inherently ephemeral
+
+Let’s look at the details of each principle:
+
+1. Single concern microservice (highly cohesive)
+Having a single concern means that a microservice should do one thing and one thing only. 
+For example, if the microservice is intended to support authentication, it should do authentication only. 
+This means that its interface should expose only access points that are relevant to authentication. 
+And internally, the microservice should have authentication behavior only. 
+
+For example, there should be no side behavior such as providing employee contact information in 
+the authentication response.
+
+Having a single concern makes the microservice easier to maintain and scale. 
+This goes hand-in-hand with the next principle.
+
+2. Discrete microservice boundaries
+A microservice must have clear boundaries separating it from its environment. 
+Another way to think about this principle is that a microservice must be well-encapsulated. 
+This means that all logic and data relevant to a microservice's single concern must be encapsulated into a 
+single deployment unit. 
+Examples of units for discrete deployment are a Linux container, 
+a WebAssembly binary, a .NET DLL, a Node.js package, and a Java JAR file, to name a few.
+
+Also, a discrete microservice is hosted in a distinct source control repository and is subject 
+to its own CI/CD (continuous integration/continuous delivery) process. 
+The microservice becomes part of a larger application after deployment. 
+But from development through testing to release, each microservice is isolated from all other microservices. 
+When a microservice is discrete, it becomes easily transportable, which is the next principle.
+
+3. Transportable microservice
+A transportable microservice can be moved from one runtime environment to another with little effort. 
+Perhaps currently, the optimal form of a transportable microservice is a Linux container image.
+
+Usually, a Linux container image is hosted in an image repository such as Red Hat Quay.io. 
+The container image can be targeted to any destination from that image repository, so a variety of applications 
+can use the image. This is all possible because the microservice is encapsulated into a discrete deployment unit 
+that can be transported to any destination. The encapsulation removes from developers all tasks except 
+configuration and deployment.
+
+This transportable feature also makes microservices easier to use in an automated or declarative deployment 
+process.
+
+4. Carry-its-own-data microservice
+A microservice should have its own data storage mechanism that is isolated from all other microservices. 
+The only way data can be shared with other microservice is by way of a public interface that the 
+microservice publishes.
+
+This principle imposes some discipline on data sharing: 
+For instance, the particular data schema used by each microservice has to be well-documented. 
+The design rules out behind-the-scenes hanky-panky that makes data hard to access or understand.
+
+The principle that a microservice carries its own data is hard for many developers to accept. 
+The common argument against a microservice carrying its own data is that the principle leads to a 
+proliferation of data redundancy.
+
+For example, imagine an e-commerce application. That application might have a microservice that manages 
+customer profile information. The application has another microservice that handles purchases. 
+When the principle that every microservice carries its own data is in force, it's quite possible that the 
+purchases microservice might have data that is redundant with the customer profile microservice. 
+Such data redundancy goes against the grain of developers who embrace the DRY principle (Don't Repeat Yourself).
+
+On the other hand, developers who embrace the carry-its-own-data principle understand the benefits and 
+have adjusted accordingly. When a microservice carries its own data, any strange behavior is confined within 
+the microservice.
+When microservices try to share data, one microservice can make a change that causes a side effect in 
+another microservice. This is fundamentally a bad way of doing business.
+
+One of the key benefits of a microservice carrying its own data is that it enforces all of the other principles. 
+This is particularly important when it comes to the final principle.
+
+5. Inherently ephemeral
+The principle that a microservice is ephemeral means that it can be created, destroyed, and replenished 
+on-demand on a target easily, quickly, and with no side effects. 
+The standard operating expectation is that microservices come and go all the time; 
+sometimes due to system failure or scaling demands.
+
+This scenario is common in a Kubernetes environment that uses the Horizontal Pod Autoscaler (HPA) 
+to accommodate scaling demands. The HPA creates and destroys containers according to momentary demands. 
+Each time a container is created, an IP address is assigned dynamically. 
+There are even situations where port numbers will be assigned dynamically too. 
+Such are the impacts of ephemeral computing.
+
+As a result, this principle that a microservice is ephemeral has two basic implications. 
+The first is that developers need to create microservices that are good citizens in the application domain. 
+This means implementing graceful startup and shutdown behavior within the microservice.
+
+The second implication is that when programming their microservices, 
+developers rely on runtime configuration settings to define external dependencies. 
+This hand-off to an external configuration differs greatly from creating a monolithic application, 
+where most dependencies are known at design time and are baked into the code. 
+In microservice development, they are not. 
+Instead, developers rely upon dynamic configuration to establish dependencies that are both internal and 
+external to the microservice.
+
+As strange as it might sound, coding to an ephemeral environment requires developers to accept that there 
+are known unknowns that will be apparent at runtime. Hence, the need to program accordingly.
+
+
+Follow these 10 fundamental microservices design principles
+Ensure high cohesion and low coupling. ...
+Define the scope properly. ...
+Adhere to the Single Responsibility Principle. ...
+Design for failure. ...
+Build around business capabilities. ...
+Decentralize data. ...
+Gear up process automation. ...
+
+1. Ensure high cohesion and low coupling
+Cohesion and coupling are two terms often used interchangeably when describing a microservices architecture. 
+The former relates to the degree of intradependence that exists between the modules of an application, 
+and the latter is used for the degree of interdependencies.
+
+You should design microservices so that cohesion is high and coupling is low. 
+This plan creates microservices that are adaptable to changes, scalable and can be extended over time.
+
+The higher the cohesion, the better, because the modules work together. If cohesion is low, the application would send too many communications back and forth between the services, causing degraded performance and scalability.
+
+Two components are loosely coupled when they are not interdependent, i.e., if they can function without 
+the other and if any change in one component wouldn't break the functionality of the other. 
+Loosely coupled components in an application should be easy to test because the component is isolatable.
+
+2. Define the scope properly
+You should define the functionality of a microservice, describing what it is intended to do. 
+The scope of a microservice corresponds to the requirement of an independent business module. 
+It's important to set a proper scope for each microservice in order to rationalize its size and 
+define its boundaries.
+
+3. Adhere to the Single Responsibility Principle
+The Single Responsibility Principle states that a class should never have more than one reason for change. 
+This principle is essential to designing a microservices-based application, 
+because there should not be multiple responsibilities in a single microservice.
+
+4. Design for failure
+One of the objectives of microservice architecture is to create fault-tolerant and resilient software systems. 
+Failure or performance issues in one service should not affect other services. 
+A memory leak, database connectivity problems or other issues in one microservice should not bring the entire 
+application down.
+Since the services in a microservices-based application are autonomous and independent, they can take advantage 
+of the circuit breaker pattern, which is a means to cut off communication with one or more services that 
+are down or experiencing errors.
+
+5. Build around business capabilities
+Each microservice should be designed to solve a business problem. 
+The developer can use the appropriate technology stack for each business problem in each microservice. 
+Unlike a monolithic application, you are not constrained to use a single best-fit homogenous technology 
+stack for the whole architecture. 
+This microservices design principle means developers should choose what's best and readily available 
+for use in every component of the application.
+
+6. Decentralize data
+Unlike in monolithic applications, microservices each maintain their own copy of the data. 
+In other words, each microservice has its own database. 
+You should not set up multiple services to access or share the same database, 
+since it defeats the purpose of autonomous microservice operation.
+
+Data pertaining to a specific microservice is private to that service. Use APIs to let other services access a microservice's owned data. This design principle enforces centralized access control and enables the developers to implement audit logging and caching seamlessly. Aim for one or two database tables per service.
+7. Gear up process automation
+A microservices design can deploy in several units, which the application team must manage. 
+Automate the deployment process for microservices-based components via smart iterative release tooling, 
+such as a CI/CD pipeline, potentially coupled with a DevOps culture.
+
+8. Enable interservice communication
+When you migrate an existing monolithic application to microservices, 
+you must break apart many interrelated components; these services need a way to communicate. 
+Microservices applications also enable diverse programming languages and approaches, 
+as explained in the fifth microservices design principle, so an application might have services built with 
+different technologies communicating with each other. APIs make it all work.
+
+When you set up microservices APIs, abstract the implementation details of how a service works and 
+only expose API methods to enable external access to the service. 
+In this setup, a microservice can scale independently.
+
+9. Monitor constantly
+Microservices in production are distributed and interrelated. 
+It is daunting to manually discover and identify errors. 
+Instead, use an automated monitoring system that can track performance constantly. 
+As part of the microservices design and deployment process, select a tool or set of tools that captures 
+and analyzes data on services' performance, and generates useful metrics.
+
+10. Manage traffic
+Traffic to microservices in an application differs from one to the next. 
+One service might have huge traffic while another is low-demand on the network. 
+In each kind of traffic scenario, performance is an important factor. 
+Take advantage of autoscaling and circuit breaker patterns to maximize performance.
