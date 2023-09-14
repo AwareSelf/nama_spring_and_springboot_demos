@@ -1,8 +1,6 @@
 package com.nama.springboot.beans;
 
-import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component("emp")
@@ -12,8 +10,6 @@ public class Emp {
 	private int empId;
 	private String empName;
 	private double empSalary;
-	private double empYearlyBonus;
-	private double empTotAnnSalary;
 	
 	
 	
@@ -24,13 +20,12 @@ public class Emp {
 
 
 
-	public Emp(int empId, String empName, double empSalary, double empYearlyBonus, double empTotAnnSalary) {
+	public Emp(int empId, String empName, double empSalary) {
 		super();
 		this.empId = empId;
 		this.empName = empName;
 		this.empSalary = empSalary;
-		this.empYearlyBonus = empYearlyBonus;
-		this.empTotAnnSalary = empTotAnnSalary;
+		
 	}
 
 
@@ -70,31 +65,8 @@ public class Emp {
 	}
 
 
-
-	public double getEmpYearlyBonus() {
-		return empYearlyBonus;
-	}
-
-
-
-	public void setEmpYearlyBonus(double empYearlyBonus) {
-		this.empYearlyBonus = empYearlyBonus;
-	}
-
-
-
-	public double getEmpTotAnnSalary() {
-		return empTotAnnSalary;
-	}
-
-
-
-	public void setEmpTotAnnSalary(double empTotAnnSalary) {
-		this.empTotAnnSalary = empTotAnnSalary;
-	}
-
     
-
+	
 	@Override
 	public int hashCode() {
 		if(this.empId >=1 && this.empId<=5)
@@ -121,11 +93,11 @@ public class Emp {
 
 	@Override
 	public String toString() {
-		return "Emp [empId=" + empId + ", empName=" + empName + ", empSalary=" + empSalary + ", empYearlyBonus="
-				+ empYearlyBonus + ", empTotAnnSalary=" + empTotAnnSalary + "]";
+		return "Emp [empId=" + empId + ", empName=" + empName + ", empSalary=" + empSalary + "]";
 	}
-	
-	
+
+
+    
 	
 	
 	

@@ -19,9 +19,9 @@ public class EmpService {
 	public EmpService()
 	{
 		this.lst = new HashSet<Emp>();
-		lst.add(new Emp(1,"Ram",5000,0,0));
-		lst.add(new Emp(2,"Shyam",6000,0,0));
-		lst.add(new Emp(3,"Mita",7000,0,0));
+		lst.add(new Emp(1,"Ram",5000));
+		lst.add(new Emp(2,"Shyam",6000));
+		lst.add(new Emp(3,"Mita",7000));
 	}
 	
 	

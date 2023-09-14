@@ -3,6 +3,7 @@ package com.nama.springboot.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +23,9 @@ import java.util.*;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000",
+		                "http://localhost:3001"}
+             )
 public class EmpRestController {
 	
 	Logger log = LoggerFactory.getLogger(EmpRestController.class);
@@ -30,7 +33,6 @@ public class EmpRestController {
 	@Autowired
 	EmpService ser;
 
-	
 	
 	@PostMapping("/emp")
 	public ResponseEntity<Emp> postEmp(@RequestBody Emp e)
@@ -66,7 +68,18 @@ public class EmpRestController {
 		 {
 		  Emp e = this.ser.getEmp(id);
 		  log.info("controller get Emp:id"+id+",emp:"+e);
-		 /*
+		 
+		
+		  
+		  /*
+		   * if EmpNotFoundException is generated from
+		   * controller layer then whatever ResponseStatus is set on top
+		  * of the Exception class, that HttpStatus will be visible
+		  * in the browser
+		  */
+		  
+		  
+		  /*
 		 if (e == null) {
 			    throw new EmpNotFoundException(
 			        "Emp not found, empId: " + id);
@@ -122,25 +135,10 @@ public class EmpRestController {
 		  log.info("emp removed");
 		
 		  String msg = "emp with empId="+id+"deleted";
-			return new ResponseEntity<>(msg,HttpStatus.OK);	
+		return new ResponseEntity<>(msg,HttpStatus.OK);
+			
 	}
 	
 	
-	@GetMapping("/emp/{id}/{bonus}")
-	public Emp calcAnnSal(@PathVariable int id,
-			              @PathVariable int bonus) {
-
 	
-        log.info("Id="+id+",bonus:"+bonus);
-        
-        Emp e = ser.getEmp(id);
-        
-        if(e!=null)
-        {
-        	e.setEmpYearlyBonus(bonus);
-        	e.setEmpTotAnnSalary((e.getEmpSalary()*12)+bonus);
-        }
-        log.info("emp:"+e);
-		return e;
-	}
 }
