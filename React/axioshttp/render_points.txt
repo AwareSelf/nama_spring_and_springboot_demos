@@ -1,0 +1,16 @@
+what is state?
+data/array/object(emparr,emp) - that you add in useState hook.
+and modify using setxxx method is a state.
+
+whenever state of functional component changes
+compnent is re-rendered in the UI.
+
+ 1) page load - >  useEffect ->getallemps->axiosget-> 
+                           setemparr -> render->table emps
+
+ 2) delete -> deletemp -> axiosdelete->
+                               setemparr->re-render table
+
+
+ 3) add/update -> addemp -> axiosput 
+                            -> setemparr -> re-render table
